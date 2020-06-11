@@ -24,5 +24,6 @@ Route::prefix('opendaylight')->group(function () {
     Route::get('save', 'OpenflowController@save');
     Route::get('nodes', 'OpenflowController@nodes');
     Route::get('openflows', 'OpenflowController@flows');
-    Route::get('openflows/{flow}', 'openflowController@flow');
+    Route::get('openflows/{flow}', 'OpenflowController@flow');
+    Route::get('received', 'OpenflowController@received');
 });
