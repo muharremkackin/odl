@@ -98,6 +98,7 @@ class OpenflowController extends Controller
             );
 
             $flows[$counter]['another-flow'] = 0;
+            $flows['safety'] = true;
 
             foreach ($node['node-connector'] as $connector) {
                 $flows[$counter]['packets']['received'] += $connector['opendaylight-port-statistics:flow-capable-node-connector-statistics']['packets']['received'];
