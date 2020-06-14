@@ -59,14 +59,7 @@ class OpenflowController extends Controller
 
     public function showFlow($flow)
     {
-
-        foreach ($this->parseFlows() as $openflow) {
-            if ($openflow['id'] == $flow) {
-
-                return view('opendaylight.flows.show')->with('flow', $openflow);
-            }
-        }
-
+        return view('opendaylight.flows.show')->with('name', $flow)->with('flows', $this->parseFlows());
     }
 
     public function parseFlows()
@@ -104,6 +97,7 @@ class OpenflowController extends Controller
                 'transmitted' => 0
             );
 
+            $flows[$counter]['another-flow'] = 0;
 
             foreach ($node['node-connector'] as $connector) {
                 $flows[$counter]['packets']['received'] += $connector['opendaylight-port-statistics:flow-capable-node-connector-statistics']['packets']['received'];
@@ -114,10 +108,11 @@ class OpenflowController extends Controller
                     if (Storage::exists('public/received.json')) {
                         $received = $this->object_to_array(json_decode(Storage::get('public/received.json')));
                         $flows[$counter]['main-received'] = $connector['opendaylight-port-statistics:flow-capable-node-connector-statistics']['packets']['received'] - $received[$connector['id']];
+                        $flows[$counter]['main-flow'] = $connector['id'];
                     }
                 } else {
                     if (key_exists('address-tracker:addresses', $connector)) {
-                        ($flows[$counter]['another-flow'] = count($connector['address-tracker:addresses']));
+                        ($flows[$counter]['another-flow'] += count($connector['address-tracker:addresses']));
                     }
                 }
             }

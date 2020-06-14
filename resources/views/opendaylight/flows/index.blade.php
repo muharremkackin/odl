@@ -1,24 +1,9 @@
 @extends('opendaylight.app')
 
-@foreach($flows as $flow)
-    @if($flow['main-received'] <= 101)
-@section('refresh')
-    <meta http-equiv="refresh" content="30"/>
-@endsection
-@else
-@section('refresh')
-@endsection
-@endif
-@endforeach
+@include('opendaylight.flows.includes.refresh')
 
 @section('content')
-    @foreach($flows as $flow)
-        @if($flow['main-received'] >= 75 && $flow['main-received']<= 100)
-            <div class="w-screen h-16 bg-yellow-200">System yogun calismakta</div>
-        @elseif($flow['main-received'] > 100)
-            <div class="w-screen h-16 bg-red-300">Sistem saldiri altinda</div>
-        @endif
-    @endforeach
+    @include('opendaylight.flows.includes.check_received')
 
     <div class="flex justify-center items-start lg:w-3/4 bg-gray-200 h-screen py-4 flex-wrap">
         @foreach($flows as $flow)
